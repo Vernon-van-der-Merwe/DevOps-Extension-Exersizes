@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="sdk/scripts/VSS.SDK.min.js"></script>
+    <script type="text/javascript">
+      VSS.init({
+        explicitNotifyLoaded: true,
+        usePlatformStyles: false,
+      });
+
+      VSS.require("TFS/Dashboards/WidgetHelpers", function (WidgetHelpers) {
+        // WidgetHelpers.IncludeWidgetStyles();
+        VSS.register("HelloWorldWidget", function () {
+          return {
+            load: function (widgetSettings) {
+              var $title = $("h2.title");
+              $title.text("Hello World v1011");
+              return WidgetHelpers.WidgetStatusHelper.Success();
+            },
+          };
+        });
+        VSS.notifyLoadSucceeded();
+      });
+      VSS.require(["VSS/Authentication/Services"], function (VSS_Auth_Service) {
+        VSS.getAccessToken().then(function (token) {
+          // Format the auth header
+          var authHeader = VSS_Auth_Service.authTokenManager.getAuthorizationHeader(
+            token
+          );
+          console.log(authHeader);
+          console.log(token);
+          // Add token as an Authorization header to your request
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div class="widget">
+      <h3 class="title">Build Warnings</h3>
+      <h3 class="title">Dev = 1 fake</h3>
+      <h3 class="title">Stag = 4 fake</h3>
+      <h3 class="title">Prod = - fake</h3>
+    </div>
+  </body>
+</html>
